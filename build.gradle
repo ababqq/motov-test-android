@@ -29,12 +29,17 @@ buildscript {
         okhttpLoggingVersion = '4.7.2'
 
         glideVersion = '4.12.0'
+        lottieVersion = '3.4.0'
 
         loggerVersion = '2.2.0'
 
         junitVersion = '4.13.2'
         testExtJunit = '1.1.3'
         espressoVersion = '3.4.0'
+
+        easyPermissionVersion = '3.0.0'
+
+        nav_version = '2.4.1'
     }
     repositories {
         google()

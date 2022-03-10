@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/weather_fragment">
+
+    <fragment
+        android:id="@+id/permission_check_fragment"
+        android:name="com.ababqq.motov_test_android.feature.permission_check.PermissionCheckFragment"
+        tools:layout="@layout/permission_check_fragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/weather_fragment"
+        android:name="com.ababqq.motov_test_android.feature.weather.WeatherFragment"
+        tools:layout="@layout/weather_fragment">
+
+        <action
+            android:id="@+id/action_weather_fragment_to_permission_check_fragment"
+            app:destination="@id/permission_check_fragment" />
+    </fragment>
+</navigation>
