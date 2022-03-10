@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
 
@@ -11,6 +14,8 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "0.1"
+
+        buildConfigField "String", "OPENWEATHERMAP_APIKEY", properties['openweathermap_apikey']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
