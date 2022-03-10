@@ -54,4 +54,8 @@ public class FusedLocationUtility {
                 Manifest.permission.ACCESS_FINE_LOCATION
         );
     }
+
+    public static LocationRequest getLocationRequest() {
+        return locationRequest;
+    }
 }
