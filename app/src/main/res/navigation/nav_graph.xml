@@ -6,9 +6,9 @@
     app:startDestination="@id/weather_fragment">
 
     <fragment
-        android:id="@+id/permission_check_fragment"
-        android:name="com.ababqq.motov_test_android.feature.permission_check.PermissionCheckFragment"
-        tools:layout="@layout/permission_check_fragment">
+        android:id="@+id/permission_fail_fragment"
+        android:name="com.ababqq.motov_test_android.feature.permission_fail.PermissionFailFragment"
+        tools:layout="@layout/permission_fail_fragment">
     </fragment>
 
     <fragment
@@ -17,7 +17,7 @@
         tools:layout="@layout/weather_fragment">
 
         <action
-            android:id="@+id/action_weather_fragment_to_permission_check_fragment"
-            app:destination="@id/permission_check_fragment" />
+            android:id="@+id/action_weather_fragment_to_permission_fail_fragment"
+            app:destination="@id/permission_fail_fragment" />
     </fragment>
 </navigation>

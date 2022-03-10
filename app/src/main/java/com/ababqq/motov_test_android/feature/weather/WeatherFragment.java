@@ -140,7 +140,7 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
     }
 
     private void navigateToPermissionFragment() {
-        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_weather_fragment_to_permission_check_fragment);
+        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_weather_fragment_to_permission_fail_fragment);
     }
 
 
