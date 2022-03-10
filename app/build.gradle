@@ -87,15 +87,27 @@ dependencies {
     //image Lib - glide
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
 
     //logging
     implementation "com.orhanobut:logger:$rootProject.loggerVersion"
 
     //test lib
-
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtJunit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "androidx.paging:paging-common:$pagingVersion"
+    androidTestImplementation "androidx.paging:paging-common:$rootProject.pagingVersion"
+    androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.nav_version"
 
+    //Permission
+    implementation "pub.devrel:easypermissions:$rootProject.easyPermissionVersion"
+
+    //Navigarion Graph
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$rootProject.nav_version"
+    implementation "androidx.navigation:navigation-fragment:$rootProject.nav_version"
+    implementation "androidx.navigation:navigation-ui:$rootProject.nav_version"
+
+    //FusedLocationProvider
+    implementation "com.google.android.gms:play-services-location:$rootProject.gmsLocationVersion"
+    implementation "com.github.niqo01.rxplayservices:rx-play-services-location:$rootProject.niqoLocationVersion"
 }
