@@ -72,6 +72,7 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
     private void observeMyGPS() {
         mViewModel.getGPSEv().observe(requireActivity(), gpsBean -> {
             Log.i(TAG, "lat:"+mViewModel.getGPS().getLat()+" lon:"+mViewModel.getGPS().getLon());
+            mViewModel.loadForecast();
         });
     }
 
