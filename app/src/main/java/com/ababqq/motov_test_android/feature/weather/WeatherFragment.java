@@ -1,32 +1,44 @@
 package com.ababqq.motov_test_android.feature.weather;
 
-import static com.ababqq.motov_test_android.utilities.Constants.REQUEST_CODE_LOCATION_PERMISSION;
-
-import androidx.lifecycle.ViewModelProvider;
+import static android.app.Activity.RESULT_OK;
+import static com.ababqq.motov_test_android.utilities.Constants.REQUEST_GMS_PERMISSION;
+import static com.ababqq.motov_test_android.utilities.Constants.REQUEST_LOCATION_PERMISSION;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.ababqq.motov_test_android.R;
 import com.ababqq.motov_test_android.databinding.WeatherFragmentBinding;
-import com.ababqq.motov_test_android.utilities.GPSUtility;
+import com.ababqq.motov_test_android.utilities.FusedLocationUtility;
 import com.ababqq.motov_test_android.viewmodels.WeatherViewModel;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class WeatherFragment extends Fragment implements EasyPermissions.PermissionCallbacks{
+public class WeatherFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
+
+    private static final String TAG = WeatherFragment.class.getSimpleName();
 
     private WeatherViewModel mViewModel;
     private WeatherFragmentBinding mBinding;
@@ -38,7 +50,9 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
+        observeLocationPermissions();
+        mViewModel.initView();
     }
 
     @Override
@@ -53,32 +67,35 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requestPermissions();
     }
 
-    public void requestPermissions(){
-        if(GPSUtility.checkLocationPermissions(requireContext())){
-            return;
-        }
+    public void observeLocationPermissions() {
+        mViewModel.checkLocationPermissions().observe(requireActivity(), checkLocationPermissions -> {
+            if (FusedLocationUtility.checkLocationPermissions(requireActivity())) {
+                FusedLocationUtility.requestGMSLocationPermission(requireActivity(),
+                        requestGMSLocationPermissionOnSuccessListener,
+                        requestGMSLocationPermissionOnFailureListener);
+                return;
+            } else {
+                FusedLocationUtility.requestPermissions(this);
+            }
+        });
+    }
 
-        EasyPermissions.requestPermissions(
-                this,
-                "You need to accept location permissions to use this app.",
-                REQUEST_CODE_LOCATION_PERMISSION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        FusedLocationUtility.requestGMSLocationPermission(requireActivity(),
+                requestGMSLocationPermissionOnSuccessListener,
+                requestGMSLocationPermissionOnFailureListener
         );
     }
 
     @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) { }
-
-    @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
         } else {
-            Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_weather_fragment_to_permission_check_fragment);
+            navigateToPermissionFragment();
         }
     }
 
@@ -87,4 +104,29 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
+
+    private void navigateToPermissionFragment() {
+        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_weather_fragment_to_permission_check_fragment);
+    }
+
+    private OnSuccessListener requestGMSLocationPermissionOnSuccessListener = o -> {
+    };
+    private OnFailureListener requestGMSLocationPermissionOnFailureListener = e -> {
+        int statusCode = ((ApiException) e).getStatusCode();
+        switch (statusCode) {
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                ResolvableApiException rae = (ResolvableApiException) e;
+                try {
+                    rae.startResolutionForResult(requireActivity(), REQUEST_GMS_PERMISSION);
+                } catch (IntentSender.SendIntentException ex) {
+                    Log.w(TAG, "LocationService approval canceled");
+                    navigateToPermissionFragment();
+                }
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                Log.w(TAG, "No way to change setting");
+                navigateToPermissionFragment();
+                break;
+        }
+    };
 }

@@ -40,6 +40,10 @@ buildscript {
         easyPermissionVersion = '3.0.0'
 
         nav_version = '2.4.1'
+
+        gmsVersion = '4.3.10'
+        gmsLocationVersion = '17.1.0'
+        niqoLocationVersion = '0.4.0'
     }
     repositories {
         google()
@@ -48,6 +52,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "com.google.gms:google-services:$gmsVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

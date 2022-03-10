@@ -102,9 +102,12 @@ dependencies {
     //Permission
     implementation "pub.devrel:easypermissions:$rootProject.easyPermissionVersion"
 
-    // Navigarion Graph
+    //Navigarion Graph
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$rootProject.nav_version"
     implementation "androidx.navigation:navigation-fragment:$rootProject.nav_version"
     implementation "androidx.navigation:navigation-ui:$rootProject.nav_version"
 
+    //FusedLocationProvider
+    implementation "com.google.android.gms:play-services-location:$rootProject.gmsLocationVersion"
+    implementation "com.github.niqo01.rxplayservices:rx-play-services-location:$rootProject.niqoLocationVersion"
 }
