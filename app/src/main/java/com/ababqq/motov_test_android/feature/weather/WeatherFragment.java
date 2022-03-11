@@ -99,7 +99,7 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
-                if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == mAdapter.getItemCount() - 2) {
+                if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() >= mAdapter.getItemCount() - 2) {
                     mViewModel.loadMorePage();
                 }
 

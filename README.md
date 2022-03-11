@@ -6,7 +6,8 @@
 
 
 ### ● 프로젝트 개요
-OpenWeatherMap의 ~~[Hourly-forecast-for-4days](https://openweathermap.org/api/hourlyVO-forecast)~~ **[Hourly-forecast-for-48hours](https://openweathermap.org/api/one-call-api)** API 를 이용하여, 현재위치의 시간별 날씨정보를 표시하는 안드로이드 앱을 구현
+OpenWeatherMap의 ~~[Hourly-forecast-for-4days](https://openweathermap.org/api/hourlyVO-forecast)~~
+**[Hourly-forecast-for-48hours](https://openweathermap.org/api/one-call-api)** API 를 이용하여, 현재위치의 시간별 날씨정보를 표시하는 안드로이드 앱을 구현
 
 
 ### ● 프로젝트 분석

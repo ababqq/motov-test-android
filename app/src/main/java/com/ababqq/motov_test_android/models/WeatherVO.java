@@ -1,11 +1,8 @@
 package com.ababqq.motov_test_android.models;
 
-import androidx.room.Entity;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity
 public class WeatherVO {
 
    @SerializedName("id")

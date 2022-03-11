@@ -17,7 +17,6 @@
         android:theme="@style/Theme.Motovtestandroid">
         <activity
             android:name=".feature.MainActivity"
-            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
