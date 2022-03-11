@@ -4,9 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/gps_check_fragment.xml" value="0.125" />
-        <entry key="app/src/main/res/layout/permission_check_fragment.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/permission_check_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/permission_fail_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/weather_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/weather_item.xml" value="0.1" />
       </map>
     </option>
   </component>

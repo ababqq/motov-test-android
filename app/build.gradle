@@ -69,6 +69,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
     implementation "androidx.paging:paging-runtime:$rootProject.pagingVersion"
     implementation "androidx.paging:paging-rxjava2:$rootProject.pagingVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+
 
     //rxjava
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJava2Version"
