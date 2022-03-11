@@ -10,6 +10,7 @@ import com.ababqq.motov_test_android.models.GPSBean;
 import com.ababqq.motov_test_android.models.HourlyVO;
 import com.ababqq.motov_test_android.mvvm.SingleLiveEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WeatherViewModel extends ViewModel {
@@ -52,12 +53,15 @@ public class WeatherViewModel extends ViewModel {
     }
 
     public void loadForecast(OnForecastFetchedListener onForecastFetchedListener) {
-        page.setValue(0);
+        if (page.getValue() == null)
+            page.setValue(0);
         mRepository.requestForecast48h(onForecastFetchedListener
                 , mGPSEv.getValue(), BuildConfig.OPENWEATHERMAP_APIKEY);
     }
 
     public List<HourlyVO> getForcastItems() {
+        if (mForecast.getValue() == null)
+            mForecast.setValue(new ArrayList<>());
         return mForecast.getValue();
     }
 
