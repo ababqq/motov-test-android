@@ -18,10 +18,11 @@ import io.reactivex.schedulers.Schedulers;
 public class WeatherRepository {
     private static final String TAG = WeatherRepository.class.getSimpleName();
     private final String PARAMS_EXCLUDED = "current,minutely,daily";
+    private final String PARAMS_UNITS = "metric";
 
     private Observable<WeatherResponse> getForecast48h(GPSBean gps, String apiKey) {
         return RetrofitInstance.getInstance().getRetrofit().create(OneCallApi.class)
-                .getForecast48h(gps.getLat().toString(), gps.getLon().toString(), PARAMS_EXCLUDED, apiKey);
+                .getForecast48h(gps.getLat().toString(), gps.getLon().toString(), PARAMS_EXCLUDED, PARAMS_UNITS, apiKey);
     }
 
     @SuppressLint("CheckResult")

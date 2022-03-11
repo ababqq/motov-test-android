@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">motov-test-android</string>
 
-
+    <!-- Weather Fragment -->
+    <string name="weather_item_icon">https://openweathermap.org/img/wn/%s@2x.png</string>
     <!-- PermissionCheck Fragment -->
     <string name="permission_fail_fragment_alert">If you do not allow the permissions\nWe can not show you the weather where you are. 😢</string>
     <string-array name="permission_fail_fragment_anim_list">

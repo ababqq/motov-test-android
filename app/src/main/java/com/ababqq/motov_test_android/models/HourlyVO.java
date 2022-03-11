@@ -1,53 +1,59 @@
 package com.ababqq.motov_test_android.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class HourlyVO {
 
+   @PrimaryKey(autoGenerate = true)
+   public int id;
    @SerializedName("dt")
    @Expose
-   private Integer dt;
+   public Long dt;
    @SerializedName("temp")
    @Expose
-   private Double temp;
+   public Double temp;
    @SerializedName("feels_like")
    @Expose
-   private Double feelsLike;
+   public Double feelsLike;
    @SerializedName("pressure")
    @Expose
-   private Integer pressure;
+   public Integer pressure;
    @SerializedName("humidity")
    @Expose
-   private Integer humidity;
+   public Integer humidity;
    @SerializedName("dew_point")
    @Expose
-   private Double dewPoint;
+   public Double dewPoint;
    @SerializedName("uvi")
    @Expose
-   private Double uvi;
+   public Double uvi;
    @SerializedName("clouds")
    @Expose
-   private Integer clouds;
+   public Integer clouds;
    @SerializedName("visibility")
    @Expose
-   private Integer visibility;
+   public Integer visibility;
    @SerializedName("wind_speed")
    @Expose
-   private Double windSpeed;
+   public Double windSpeed;
    @SerializedName("wind_deg")
    @Expose
-   private Integer windDeg;
+   public Integer windDeg;
    @SerializedName("wind_gust")
    @Expose
-   private Double windGust;
+   public Double windGust;
    @SerializedName("weather")
    @Expose
-   private List<WeatherVO> weatherVO = null;
+   public List<WeatherVO> weatherVO;
    @SerializedName("pop")
    @Expose
-   private Double pop;
-
+   public Double pop;
 }

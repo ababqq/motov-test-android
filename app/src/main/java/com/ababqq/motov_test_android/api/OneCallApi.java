@@ -14,6 +14,7 @@ public interface OneCallApi {
             @Query("lat") String lat,
             @Query("lon") String lon,
             @Query("exclude") String exclude,
+            @Query("units") String units,
             @Query("appid") String apiKey
     );
 }

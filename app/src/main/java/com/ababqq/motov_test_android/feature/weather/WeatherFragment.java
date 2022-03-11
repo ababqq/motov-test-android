@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ababqq.motov_test_android.R;
 import com.ababqq.motov_test_android.databinding.WeatherFragmentBinding;
@@ -42,6 +44,7 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
 
     private WeatherViewModel mViewModel;
     private WeatherFragmentBinding mBinding;
+    private WeatherListAdapter mAdapter;
 
     private LocationCallback mLocationCallback;
 
@@ -49,6 +52,7 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
+        observeWeatherListVM();
         observeLocationPermissions();
         observeMyGPS();
         mViewModel.initView();
@@ -59,7 +63,7 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
                              @Nullable Bundle savedInstanceState) {
         mBinding = mBinding.inflate(LayoutInflater.from(getContext()));
         mBinding.setViewModel(mViewModel);
-
+        initList();
         return mBinding.getRoot();
     }
 
@@ -69,10 +73,48 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
         initLocationCallback();
     }
 
+    private void observeWeatherListVM() {
+        mViewModel.refreshForecastItems().observe(this, aVoid -> {
+            mAdapter.refresh();
+        });
+        mViewModel.getPage().observe(this, aVoid -> {
+            mAdapter.refresh();
+        });
+    }
+
+    private void initList() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mAdapter = new WeatherListAdapter(requireContext());
+        mAdapter.setViewModel(mViewModel);
+        mBinding.weatherContentsList.setLayoutManager(layoutManager);
+        mBinding.weatherContentsList.setAdapter(mAdapter);
+        mBinding.weatherContentsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == mAdapter.getItemCount() - 2) {
+                    mViewModel.loadMorePage();
+                }
+
+            }
+        });
+    }
+
     private void observeMyGPS() {
         mViewModel.getGPSEv().observe(requireActivity(), gpsBean -> {
-            Log.i(TAG, "lat:"+mViewModel.getGPS().getLat()+" lon:"+mViewModel.getGPS().getLon());
-            mViewModel.loadForecast();
+            Log.i(TAG, "lat:" + mViewModel.getGPS().getLat() + " lon:" + mViewModel.getGPS().getLon());
+            mViewModel.loadForecast(items -> {
+                mViewModel.setForecastItems().postValue(items);
+                mBinding.weatherContentsList.setVisibility(View.VISIBLE);
+            });
+
         });
     }
 
@@ -110,11 +152,12 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
             }
         };
     }
+
     @SuppressLint("MissingPermission")
-    public void requestUpdate(LocationRequest locationRequest){
-        Log.d(TAG,"LocationRequest have been request");
+    public void requestUpdate(LocationRequest locationRequest) {
+        Log.d(TAG, "LocationRequest have been request");
         LocationServices.getFusedLocationProviderClient(requireContext())
-                .requestLocationUpdates(locationRequest,mLocationCallback,null);
+                .requestLocationUpdates(locationRequest, mLocationCallback, null);
     }
 
     @Override
