@@ -1,6 +1,6 @@
 package com.ababqq.motov_test_android.entity;
 
-import com.ababqq.motov_test_android.models.Hourly;
+import com.ababqq.motov_test_android.models.HourlyVO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,7 +21,7 @@ public class WeatherResponse {
    private Integer timezoneOffset;
    @SerializedName("hourly")
    @Expose
-   private List<Hourly> hourly = null;
+   private List<HourlyVO> hourly = null;
 
    public Double getLat() {
       return lat;
@@ -55,11 +55,11 @@ public class WeatherResponse {
       this.timezoneOffset = timezoneOffset;
    }
 
-   public List<Hourly> getHourly() {
+   public List<HourlyVO> getHourly() {
       return hourly;
    }
 
-   public void setHourly(List<Hourly> hourly) {
+   public void setHourly(List<HourlyVO> hourly) {
       this.hourly = hourly;
    }
 

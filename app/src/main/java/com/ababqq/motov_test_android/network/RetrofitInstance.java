@@ -7,10 +7,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-class RetrofitInstance {
+public class RetrofitInstance {
 
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/";
-    private static final String ICON_RES_URL = "http://openweathermap.org/img/wn/";
     private static OkHttpClient mOkHttpClient = null;
 
     private RetrofitInstance() {
