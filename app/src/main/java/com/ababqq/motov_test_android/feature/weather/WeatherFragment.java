@@ -64,13 +64,17 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
         mBinding = mBinding.inflate(LayoutInflater.from(getContext()));
         mBinding.setViewModel(mViewModel);
         initList();
+        initLocationCallback();
+        if (mViewModel.getForcastItems().size()!=0) {
+            mAdapter.refresh();
+            mBinding.weatherContentsList.setVisibility(View.VISIBLE);
+        }
         return mBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initLocationCallback();
     }
 
     private void observeWeatherListVM() {
@@ -145,7 +149,8 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
 
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
-                        mViewModel.setGPS(location.getLongitude(), location.getLatitude());
+                        if (mViewModel.getGPS() ==null)
+                            mViewModel.setGPS(location.getLongitude(), location.getLatitude());
                     }
                 }
                 LocationServices.getFusedLocationProviderClient(requireContext()).removeLocationUpdates(mLocationCallback);
