@@ -26,13 +26,13 @@ class WeatherListAdapter extends RecyclerView.Adapter<WeatherListItemVH> {
     public WeatherListItemVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         WeatherItemBinding binding = WeatherItemBinding.
                 inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new WeatherListItemVH(binding, mContext);
+        return new WeatherListItemVH(binding);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull WeatherListItemVH holder, int position) {
-        holder.bind(position, mViewModel.getForcastItems().get(position));
+        holder.bind(mViewModel.getForcastItems().get(position));
     }
 
     @Override

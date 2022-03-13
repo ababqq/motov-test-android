@@ -9,10 +9,6 @@
             name="item"
             type="com.ababqq.motov_test_android.models.HourlyVO" />
 
-        <variable
-            name="hour"
-            type="java.lang.String" />
-
     </data>
 
     <RelativeLayout
@@ -26,7 +22,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_applesdgothicneo_regular"
             android:gravity="center"
-            android:text='@{hour}'
+            app:weatherHour="@{item.dt}"
             android:textSize="10dp"
             tools:text="오전 4시" />
 
@@ -39,6 +35,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="9dp"
+            app:weatherIconUrl="@{item.weatherVO.get(0).icon}"
             tools:background="@drawable/icon_ex" />
 
         <TextView
@@ -48,7 +45,7 @@
             android:layout_below="@+id/weather_item_icon"
             android:fontFamily="@font/font_applesdgothicneo_regular"
             android:gravity="center"
-            android:text='@{item.temp+"°C"}'
+            app:weatherTemp="@{item.temp}"
             android:textSize="14dp"
             tools:text="4°C" />
 
@@ -70,8 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font_applesdgothicneo_regular"
-                android:text='@{item.humidity+"%"}'
                 android:textSize="10dp"
+                app:weatherHumidity="@{item.humidity}"
                 tools:text="10%" />
         </LinearLayout>
 
