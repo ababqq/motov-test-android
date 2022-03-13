@@ -20,18 +20,17 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/weather_item_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_applesdgothicneo_regular"
             android:gravity="center"
             android:text='@{hour}'
-            android:textColor="@color/white"
             android:textSize="10dp"
             tools:text="오전 4시" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/weather_item_icon"
             android:layout_width="46dp"
             android:layout_height="46dp"
@@ -42,7 +41,7 @@
             android:layout_marginBottom="9dp"
             tools:background="@drawable/icon_ex" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/weather_item_temp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +49,6 @@
             android:fontFamily="@font/font_applesdgothicneo_regular"
             android:gravity="center"
             android:text='@{item.temp+"°C"}'
-            android:textColor="@color/white"
             android:textSize="14dp"
             tools:text="4°C" />
 
@@ -67,13 +65,12 @@
                 android:layout_height="14dp"
                 android:background="@drawable/humidity" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/weather_item_humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font_applesdgothicneo_regular"
                 android:text='@{item.humidity+"%"}'
-                android:textColor="@color/white"
                 android:textSize="10dp"
                 tools:text="10%" />
         </LinearLayout>
