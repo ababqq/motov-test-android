@@ -5,9 +5,6 @@
 
     <data>
 
-        <variable
-            name="viewModel"
-            type="com.ababqq.motov_test_android.viewmodels.PermissionFailViewModel" />
     </data>
 
     <RelativeLayout

@@ -4,7 +4,6 @@ import static com.ababqq.motov_test_android.utilities.Constants.REQUEST_GMS_PERM
 
 import android.annotation.SuppressLint;
 import android.content.IntentSender;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,9 +24,7 @@ import com.ababqq.motov_test_android.utilities.FusedLocationUtility;
 import com.ababqq.motov_test_android.viewmodels.WeatherViewModel;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -46,8 +43,6 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
     private WeatherFragmentBinding mBinding;
     private WeatherListAdapter mAdapter;
 
-    private LocationCallback mLocationCallback;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +50,8 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
         observeWeatherListVM();
         observeLocationPermissions();
         observeMyGPS();
-        mViewModel.initView();
+        mViewModel.checkLocationPermission();
+        mViewModel.initLocationCallback();
     }
 
     @Override
@@ -64,7 +60,6 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
         mBinding = mBinding.inflate(LayoutInflater.from(getContext()));
         mBinding.setViewModel(mViewModel);
         initList();
-        initLocationCallback();
         if (mViewModel.getForcastItems().size()!=0) {
             mAdapter.refresh();
             mBinding.weatherContentsList.setVisibility(View.VISIBLE);
@@ -83,6 +78,32 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
         });
         mViewModel.getPage().observe(this, aVoid -> {
             mAdapter.refresh();
+        });
+    }
+
+    private void observeMyGPS() {
+        mViewModel.getGPS().observe(requireActivity(), gpsBean -> {
+            Log.i(TAG, "lat:" + mViewModel.getGPS().getValue().getLat() + " lon:" + mViewModel.getGPS().getValue().getLon());
+            mViewModel.loadForecast(items -> {
+                mViewModel.setForecastItems().postValue(items);
+                mBinding.weatherContentsList.setVisibility(View.VISIBLE);
+            });
+        });
+        mViewModel.getGPSCallbackEv().observe(requireActivity(), callBack -> {
+            LocationServices.getFusedLocationProviderClient(requireContext()).removeLocationUpdates(mViewModel.getLocationCallback());
+        });
+    }
+
+    private void observeLocationPermissions() {
+        mViewModel.getLocationPermissions().observe(requireActivity(), checkLocationPermissions -> {
+            if (FusedLocationUtility.checkLocationPermissions(requireActivity())) {
+                FusedLocationUtility.requestGMSLocationPermission(requireActivity(),
+                        requestGMSLocationPermissionOnSuccessListener,
+                        requestGMSLocationPermissionOnFailureListener);
+                return;
+            } else {
+                FusedLocationUtility.requestPermissions(this);
+            }
         });
     }
 
@@ -111,60 +132,12 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
         });
     }
 
-    private void observeMyGPS() {
-        mViewModel.getGPSEv().observe(requireActivity(), gpsBean -> {
-            Log.i(TAG, "lat:" + mViewModel.getGPS().getLat() + " lon:" + mViewModel.getGPS().getLon());
-            mViewModel.loadForecast(items -> {
-                mViewModel.setForecastItems().postValue(items);
-                mBinding.weatherContentsList.setVisibility(View.VISIBLE);
-            });
-
-        });
-    }
-
-    public void observeLocationPermissions() {
-        mViewModel.checkLocationPermissions().observe(requireActivity(), checkLocationPermissions -> {
-            if (FusedLocationUtility.checkLocationPermissions(requireActivity())) {
-                FusedLocationUtility.requestGMSLocationPermission(requireActivity(),
-                        requestGMSLocationPermissionOnSuccessListener,
-                        requestGMSLocationPermissionOnFailureListener);
-                return;
-            } else {
-                FusedLocationUtility.requestPermissions(this);
-            }
-        });
-    }
-
-    private void initLocationCallback() {
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-
-                if (locationResult == null) {
-                    Log.d(TAG, "Location information have not been recieved");
-                    return;
-                }
-                Log.d(TAG, "Location information have been recieved");
-
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        if (mViewModel.getGPS() ==null)
-                            mViewModel.setGPS(location.getLongitude(), location.getLatitude());
-                    }
-                }
-                LocationServices.getFusedLocationProviderClient(requireContext()).removeLocationUpdates(mLocationCallback);
-            }
-        };
-    }
-
     @SuppressLint("MissingPermission")
     public void requestUpdate(LocationRequest locationRequest) {
         Log.d(TAG, "LocationRequest have been request");
         LocationServices.getFusedLocationProviderClient(requireContext())
-                .requestLocationUpdates(locationRequest, mLocationCallback, null);
+                .requestLocationUpdates(locationRequest, mViewModel.getLocationCallback(), null);
     }
-
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         FusedLocationUtility.requestGMSLocationPermission(requireActivity(),
@@ -172,7 +145,6 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
                 requestGMSLocationPermissionOnFailureListener
         );
     }
-
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
@@ -181,18 +153,14 @@ public class WeatherFragment extends Fragment implements EasyPermissions.Permiss
             navigateToPermissionFragment();
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
-
     private void navigateToPermissionFragment() {
         Navigation.findNavController(mBinding.getRoot()).navigate(R.id.action_weather_fragment_to_permission_fail_fragment);
     }
-
-
     private OnSuccessListener requestGMSLocationPermissionOnSuccessListener = o -> {
         requestUpdate(FusedLocationUtility.getLocationRequest());
     };

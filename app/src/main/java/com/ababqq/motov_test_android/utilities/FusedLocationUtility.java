@@ -45,9 +45,9 @@ public class FusedLocationUtility {
                 .addOnFailureListener(failureListener);
     }
 
-    public static void requestPermissions(WeatherFragment weatherFragment) {
+    public static void requestPermissions(Fragment fragment) {
         EasyPermissions.requestPermissions(
-                weatherFragment,
+                fragment,
                 "You need to accept location permissions to use this app.",
                 REQUEST_LOCATION_PERMISSION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,

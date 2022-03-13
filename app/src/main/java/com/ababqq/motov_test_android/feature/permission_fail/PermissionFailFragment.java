@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.ababqq.motov_test_android.R;
 import com.ababqq.motov_test_android.databinding.PermissionFailFragmentBinding;
-import com.ababqq.motov_test_android.viewmodels.PermissionFailViewModel;
 import com.airbnb.lottie.RenderMode;
 
 import java.util.ArrayList;
@@ -23,21 +21,17 @@ public class PermissionFailFragment extends Fragment {
 
     private static final String TAG = PermissionFailFragment.class.getSimpleName();
 
-    private PermissionFailViewModel mViewModel;
     private PermissionFailFragmentBinding mBinding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(PermissionFailViewModel.class);
-        mViewModel.initView();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = mBinding.inflate(LayoutInflater.from(getContext()));
-        mBinding.setViewModel(mViewModel);
         return mBinding.getRoot();
     }
 
