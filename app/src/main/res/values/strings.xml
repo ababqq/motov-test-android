@@ -3,6 +3,10 @@
 
     <!-- Weather Fragment -->
     <string name="weather_item_icon">https://openweathermap.org/img/wn/%s@2x.png</string>
+    <string name="weather_item_humidity">%d%%</string>
+    <string name="weather_item_temp">%.1f°C</string>
+    <string name="weather_item_hour">%s %d시</string>
+
     <!-- PermissionCheck Fragment -->
     <string name="permission_fail_fragment_alert">If you do not allow the permissions\nWe can not show you the weather where you are. 😢</string>
     <string-array name="permission_fail_fragment_anim_list">
