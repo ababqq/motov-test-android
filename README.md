@@ -27,16 +27,27 @@ Motov의 핵심 사업인 Taxi Top Media Ads Service의 로직과 유사한 설�
 ### ● 기술 스택
 
 Language : ![badge](https://img.shields.io/badge/Language-Java8-007396?logo=Java)
+
 Framework : ![badge](https://img.shields.io/badge/Framework-Android-3DDC84?logo=Android)
+
 Architecture : AAC ViewModel (VM + DataBinding + bindingAdapter)
+
 VCS : ![badge](https://img.shields.io/badge/SCM-Github-181717?logo=Github) ![badge](https://img.shields.io/badge/SCM-Git-F05032?logo=Git)
+
 UI : RecyeclerView, Navigation Component
+
 비동기 처리 : ![badge](https://img.shields.io/badge/Library-RxJava2-b7178b)
+
 네트워킹 : ![badge](https://img.shields.io/badge/Library-Retrofit2-47b984) ![badge](https://img.shields.io/badge/Library-okHttp3-009485) 
+
 이미지 로더 : ![badge](https://img.shields.io/badge/Library-Glide-21baa2)
+
 IDE : ![badge](https://img.shields.io/badge/IDE-Android_Studio-3DDC84?logo=Android-Studio) 
+
 Package : ![badge](https://img.shields.io/badge/Package-Gradle-02303A?logo=Gradle)
+
 Test : ![badge](https://img.shields.io/badge/Library-Espresso-946e59)
+
 Paging : Custom Paging
 
 ## :globe_with_meridians: 시스템 구조
